@@ -1,0 +1,72 @@
+/* Kiosk design tokens. persona.md `theme:` picks the colour block;
+   the kiosk picks laptop/tablet from the screen orientation; the phone app
+   (public/m/) uses the mobile block.
+   <body data-theme="blue|paper|night" data-device="laptop|tablet"> */
+:root {
+  --k-listen: #FFD43B; --k-listen-ink: #0B0C10;
+  --k-qr-bg: #FFFFFF; --k-qr-ink: #0B0C10;
+  --k-font-display: 'Archivo', 'Noto Sans TC', sans-serif; /* use with font-stretch:125%; font-weight:900 */
+  --k-font-body: 'Archivo', 'Noto Sans TC', 'Noto Sans JP', sans-serif;
+  --k-font-mono: 'JetBrains Mono', 'Noto Sans TC', ui-monospace, monospace;
+  --k-font-cjk: 'Noto Sans TC', 'Archivo', sans-serif;
+  --k-font-ja: 'Noto Sans JP', 'Archivo', sans-serif;
+  --k-s1: 8px; --k-s2: 16px; --k-s3: 24px; --k-s4: 40px; --k-s5: 64px;
+}
+[data-theme="blue"] {
+  --k-bg:#1F3BFF; --k-grid:#3A55FF; --k-ink:#FFFFFF; --k-ink2:#D6DCFF; --k-display:#FFFFFF; --k-num:#FFFFFF;
+  --k-rule:#7086FF; --k-ctl-line:#FFFFFF; --k-stage-line:#9AA9FF;
+  --k-box-bg:#FFFFFF; --k-box-ink:#0B0C10; --k-box2-bg:#0B0C10; --k-box2-ink:#FFFFFF;
+  --k-btn-bg:#FFFFFF; --k-btn-ink:#0B0C10;
+  --k-field-bg:#1F3BFF; --k-field-line:#FFFFFF; --k-field-ph:#D6DCFF;
+  --k-card-bg:#FFFFFF; --k-card-line:#FFFFFF; --k-card-ink:#0B0C10; --k-card-accent:#1F3BFF; --k-card-meta:#464B5E;
+  --k-qr-edge:#FFFFFF; --k-listen-edge:#FFD43B;
+}
+[data-theme="paper"] {
+  --k-bg:#F4F4EF; --k-grid:#DADFF3; --k-ink:#0B0C10; --k-ink2:#474A55; --k-display:#1F3BFF; --k-num:#1F3BFF;
+  --k-rule:#B4BEF0; --k-ctl-line:#1F3BFF; --k-stage-line:#9AA9F0;
+  --k-box-bg:#0B0C10; --k-box-ink:#FFFFFF; --k-box2-bg:#1F3BFF; --k-box2-ink:#FFFFFF;
+  --k-btn-bg:#1F3BFF; --k-btn-ink:#FFFFFF;
+  --k-field-bg:#FFFFFF; --k-field-line:#1F3BFF; --k-field-ph:#5B5F6C;
+  --k-card-bg:#FFFFFF; --k-card-line:#1F3BFF; --k-card-ink:#0B0C10; --k-card-accent:#1F3BFF; --k-card-meta:#474A55;
+  --k-qr-edge:#1F3BFF; --k-listen-edge:#0B0C10;
+}
+[data-theme="night"] {
+  --k-bg:#0B0C10; --k-grid:#191C27; --k-ink:#FFFFFF; --k-ink2:#A9AEC0; --k-display:#FFFFFF; --k-num:#6B85FF;
+  --k-rule:#2A2F40; --k-ctl-line:#6B85FF; --k-stage-line:#3A4160;
+  --k-box-bg:#FFFFFF; --k-box-ink:#0B0C10; --k-box2-bg:#6B85FF; --k-box2-ink:#0B0C10;
+  --k-btn-bg:#6B85FF; --k-btn-ink:#0B0C10;
+  --k-field-bg:#12141B; --k-field-line:#6B85FF; --k-field-ph:#A9AEC0;
+  --k-card-bg:#12141B; --k-card-line:#2A2F40; --k-card-ink:#FFFFFF; --k-card-accent:#6B85FF; --k-card-meta:#A9AEC0;
+  --k-qr-edge:#FFFFFF; --k-listen-edge:#FFD43B;
+}
+[data-device="laptop"] {
+  --k-w:1440px; --k-h:900px; --k-pad:40px; --k-gap:32px; --k-bar-h:56px; --k-grid-cols:6; --k-grid-rows:4;
+  --k-t-label:14px; --k-t-small:18px; --k-t-body:24px; --k-t-answer:32px; --k-t-transcript:44px;
+  --k-t-display:112px; --k-t-hero:184px; --k-t-cjk-hero:72px; --k-t-cjk-box:40px; --k-t-cjk-sub:32px;
+  --k-t-num:28px; --k-t-name:30px; --k-t-desc:20px; --k-t-tag:22px; --k-t-talk:36px; --k-t-field:22px;
+  --k-t-otitle:64px; --k-t-msg:30px; --k-t-otime:24px; --k-t-orow:22px;
+  --k-qr:120px; --k-qr-poster:360px; --k-t-poster:84px; --k-t-cjk-poster:52px; --k-qr-quiet:16px; --k-talk-h:112px; --k-send-w:112px; --k-card-pad:20px; --k-o-row:46px; --k-o-timecol:96px;
+}
+[data-device="tablet"] {
+  --k-w:768px; --k-h:1024px; --k-pad:28px; --k-gap:24px; --k-bar-h:52px; --k-grid-cols:4; --k-grid-rows:6;
+  --k-t-label:13px; --k-t-small:16px; --k-t-body:22px; --k-t-answer:28px; --k-t-transcript:34px;
+  --k-t-display:64px; --k-t-hero:116px; --k-t-cjk-hero:56px; --k-t-cjk-box:32px; --k-t-cjk-sub:26px;
+  --k-t-num:22px; --k-t-name:22px; --k-t-desc:17px; --k-t-tag:19px; --k-t-talk:30px; --k-t-field:20px;
+  --k-t-otitle:46px; --k-t-msg:22px; --k-t-otime:20px; --k-t-orow:18px;
+  --k-qr:120px; --k-qr-poster:300px; --k-t-poster:84px; --k-t-cjk-poster:48px; --k-qr-quiet:16px; --k-talk-h:104px; --k-send-w:80px; --k-card-pad:16px; --k-o-row:40px; --k-o-timecol:72px;
+}
+
+/* ---- Mobile — reuses the theme blocks above, plus: ---- */
+[data-theme="blue"], [data-theme="paper"] { --m-cta-bg:#1F3BFF; --m-cta-ink:#FFFFFF; }
+[data-theme="night"] { --m-cta-bg:#6B85FF; --m-cta-ink:#0B0C10; }
+[data-device="mobile"] {
+  --k-w:100vw; --k-h:100dvh; --k-pad:20px; --k-grid-cols:4; --k-grid-rows:8;
+  --m-safe-top:env(safe-area-inset-top); --m-safe-bottom:env(safe-area-inset-bottom);
+  --m-stage-land:36dvh; --m-stage-full:32dvh; --m-stage-mid:24dvh; --m-stage-compact:112px; --m-compact-maker:196px;
+  --m-t-display:clamp(48px, 14vw, 56px); --m-t-limit:clamp(44px, 12.8vw, 50px); --m-t-box:26px;
+  --m-t-answer:19px; --m-t-transcript:26px; --m-o-row:44px;
+  /* text inputs must stay exactly 16px so iOS doesn't zoom */
+}
+@media (max-width: 370px) { [data-device="mobile"] { --k-pad:16px; --m-t-box:24px; --m-t-answer:18px; --m-t-transcript:24px; } }
+/* Keyboard: keep the input bar above it with visualViewport, e.g.
+   visualViewport.onresize = () => root.style.setProperty('--m-kb', (innerHeight - visualViewport.height) + 'px'); */

@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex" />
+    <title>Maker · 節目單</title>
+    <link rel="icon" href="/icon.png" />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <style>
+      /* The evening on one page: agenda (with who's demoing), the demo
+         speakers, topic tables, tonight's people, food, links. Same BLUE
+         look as Maker. Only for checked-in guests (uses Maker's token). */
+      :root {
+        --bg: #1f3bff; --grid: #3a55ff; --ink: #fff; --ink2: #d6dcff; --card: #fff; --card-ink: #0b0c10; --muted: #5a6075; --accent: #1f3bff; --rule: #7086ff;
+        --display: "Archivo", "Noto Sans TC", "PingFang TC", sans-serif;
+        --mono: "JetBrains Mono", "Noto Sans TC", "PingFang TC", ui-monospace, monospace;
+        --body: "Archivo", "Noto Sans TC", "PingFang TC", sans-serif;
+      }
+      * { box-sizing: border-box; margin: 0; }
+      body {
+        background-color: var(--bg); color: var(--ink); font-family: var(--body); -webkit-font-smoothing: antialiased;
+        background-image: linear-gradient(to right, var(--grid) 1px, transparent 1px);
+        background-size: 25% 100%;
+        padding: 0 16px calc(32px + env(safe-area-inset-bottom));
+      }
+      a { color: inherit; }
+      .top { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 0; background: var(--bg); }
+      .top a.back { font-family: var(--mono); font-weight: 800; text-decoration: none; border: 2px solid #fff; padding: 6px 10px; }
+      .langs { display: flex; gap: 4px; }
+      .langs button { font: 700 14px var(--body); background: transparent; color: #fff; border: 0; padding: 6px 10px; cursor: pointer; }
+      .langs button[aria-pressed="true"] { background: #fff; color: var(--card-ink); }
+      .hero { padding: 12px 0 8px; }
+      .hero .label { font: 700 13px var(--mono); color: var(--ink2); letter-spacing: .04em; }
+      .hero h1 { font: 900 44px/0.95 var(--display); font-stretch: 125%; margin-top: 8px; }
+      .box { display: inline-block; background: #fff; color: var(--card-ink); font-weight: 900; font-size: 22px; padding: 4px 10px; margin-top: 10px; }
+      nav.jump { display: flex; flex-wrap: wrap; gap: 5px; margin: 16px 0 4px; }
+      /* One font and a fixed box, so Latin ("Demo", "Tacos") and Chinese labels line up. */
+      nav.jump a { display: inline-flex; align-items: center; height: 36px; padding: 0 7px; line-height: 1; font: 700 14px "Noto Sans TC", "PingFang TC", sans-serif; text-decoration: none; border: 2px solid #fff; }
+      h2 { font: 800 13px var(--mono); letter-spacing: .06em; color: var(--ink2); margin: 28px 0 10px; scroll-margin-top: 64px; }
+      .card { background: var(--card); color: var(--card-ink); padding: 14px 16px; margin-bottom: 10px; }
+      /* agenda */
+      .agenda { background: var(--card); color: var(--card-ink); }
+      .slot { display: grid; grid-template-columns: 58px 1fr; gap: 10px; padding: 10px 16px; border-top: 1px solid #e3e6f2; }
+      .slot:first-child { border-top: 0; }
+      .slot time { font: 800 15px var(--mono); color: var(--accent); }
+      .slot b { font-size: 16px; }
+      .slot ul { list-style: none; padding: 0; margin: 6px 0 0; display: grid; gap: 4px; }
+      .slot li { font-size: 14px; color: var(--muted); }
+      .slot li strong { color: var(--card-ink); }
+      /* people / speakers */
+      .who { display: flex; gap: 12px; align-items: center; }
+      .who img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; flex: none; }
+      .who .ph { width: 52px; height: 52px; border-radius: 50%; background: #e7ebff; color: var(--accent); display: grid; place-items: center; font: 900 20px var(--display); flex: none; }
+      .who b { display: block; font: 900 18px var(--display); font-stretch: 112%; color: var(--accent); text-transform: uppercase; }
+      .who span { display: block; font: 500 13px var(--mono); color: var(--muted); margin-top: 2px; }
+      .tag { display: inline-block; font: 800 12px var(--mono); background: var(--accent); color: #fff; padding: 3px 7px; margin-bottom: 8px; }
+      .card .title { font-weight: 800; font-size: 16px; margin: 10px 0 4px; }
+      .card p { font-size: 15px; line-height: 1.5; }
+      .card .ask { margin-top: 8px; font-size: 14px; color: var(--muted); }
+      .card .ask b { color: var(--card-ink); }
+      .card .role { font-weight: 700; font-size: 14px; margin-top: 8px; }
+      .btn { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 700; padding: 10px 12px; }
+      .table-head { display: flex; justify-content: space-between; align-items: baseline; }
+      .table-head b { font: 900 22px var(--display); font-stretch: 125%; color: var(--accent); }
+      .table-head span { font: 600 13px var(--mono); color: var(--muted); }
+      .lead { margin-top: 10px; font: 600 13px var(--mono); color: var(--muted); display: flex; align-items: center; gap: 8px; }
+      .lead img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex: none; }
+      .lead strong { display: block; font: 800 15px var(--body); color: var(--card-ink); }
+      .lead em { display: block; font-style: normal; font: 600 13px var(--body); color: var(--accent); margin-top: 2px; }
+      .menu { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 6px; }
+      .menu li { font-size: 15px; padding: 6px 0; border-top: 1px solid #e3e6f2; }
+      .menu li span { color: var(--muted); font-size: 13px; }
+      .menu li.veg b { color: #0a7d3b; }
+      .menu li.veg::before { content: "🌱 "; }
+      .card p.drinks { margin-top: 10px; font-size: 14px; color: var(--muted); }
+      .gate { text-align: center; padding: 48px 8px; }
+      .gate p { font-size: 18px; line-height: 1.5; margin-bottom: 20px; }
+      .gate a { display: inline-block; background: #fff; color: var(--card-ink); font-weight: 900; padding: 12px 18px; text-decoration: none; }
+      [hidden] { display: none !important; }
+          [data-lang][hidden] { display: none; }
+          .about-p { margin: 0 0 12px; line-height: 1.6; }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <a class="back" href="/m/" id="back">← MAKER</a>
+      <div class="langs" role="group">
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="zh" lang="zh-Hant">中文</button>
+        <button type="button" data-lang="ja" lang="ja">日本語</button>
+      </div>
+    </header>
+
+    <div id="gate" class="gate" hidden>
+      <p id="gate-text"></p>
+      <a href="/m/" id="gate-btn"></a>
+    </div>
+
+    <main id="guide" hidden>
+      <section class="hero">
+        <div class="label" id="when"></div>
+        <h1>TONIGHT</h1>
+        <span class="box" id="hero-box"></span>
+      </section>
+      <nav class="jump" id="jump"></nav>
+
+      <h2 id="s-agenda"></h2>
+      <div class="agenda" id="agenda"></div>
+
+      <h2 id="s-demos"></h2>
+      <div id="demos"></div>
+
+      <h2 id="s-tables"></h2>
+      <div id="tables"></div>
+
+      <h2 id="s-people"></h2>
+      <div id="people"></div>
+
+      <h2 id="s-food"></h2>
+      <div class="card" id="food"></div>
+
+      <h2 id="s-links"></h2>
+      <div id="links"></div>
+      <h2 id="s-about"></h2>
+      <div id="about"></div>
+    </main>
+
+    <script type="module">
+      const $ = (id) => document.getElementById(id);
+      const store = { get: (k) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
+      // The phone app's current language (it saves it here).
+      let lang = ["zh", "en", "ja"].includes(store.get("maker-lang-v2")) ? store.get("maker-lang-v2") : "en";
+      let data = null;
+
+      const S = {
+        zh: { back: "← 回到對話", title: "今晚節目單", agenda: "議程", demos: "{n} 場 DEMO 講者", tables: "主題桌", people: "今晚的人", food: "吃的喝的", links: "連結", about: "關於 MAKER", jumpAgenda: "議程", jumpDemos: "Demo", jumpTables: "主題桌", jumpPeople: "今晚的人", jumpFood: "吃的",
+              round1: "第一輪", round2: "第二輪", ask: "會後可以問：", lead: "桌長：", site: "打開作品網站", linkedin: "打開 LinkedIn", gate: "節目單只給今晚有報到的來賓看。先跟 Maker 報到，就能打開。", gateBtn: "去報到 →", lost: "連線有問題，請稍後再試。" },
+        en: { back: "← Back to chat", title: "Tonight's program", agenda: "AGENDA", demos: "THE {n} DEMOS", tables: "TOPIC TABLES", people: "TONIGHT'S PEOPLE", food: "FOOD & DRINKS", links: "LINKS", about: "ABOUT MAKER", jumpAgenda: "Agenda", jumpDemos: "Demos", jumpTables: "Tables", jumpPeople: "People", jumpFood: "Food",
+              round1: "Round 1", round2: "Round 2", ask: "Ask them after: ", lead: "Topic Lead: ", site: "Open project site", linkedin: "Open LinkedIn", gate: "The program is for tonight's checked-in guests. Check in with Maker first, then open it.", gateBtn: "Check in →", lost: "Connection problem. Please try again in a moment." },
+        ja: { back: "← チャットに戻る", title: "今夜のプログラム", agenda: "プログラム", demos: "デモ {n} 本・登壇者", tables: "テーマ卓", people: "今夜の人たち", food: "食べ物・飲み物", links: "リンク", about: "MAKER について", jumpAgenda: "プログラム", jumpDemos: "デモ", jumpTables: "テーマ卓", jumpPeople: "人", jumpFood: "食べ物",
+              round1: "前半", round2: "後半", ask: "終わったら聞いてみよう：", lead: "卓リード：", site: "作品サイトを開く", linkedin: "LinkedIn を開く", gate: "プログラムは今夜チェックインしたゲスト向けです。先に Maker でチェックインしてね。", gateBtn: "チェックインへ →", lost: "接続に問題があります。少ししてからもう一度試してね。" },
+      };
+      const t = (k) => S[lang][k] ?? S.en[k];
+      const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+      // Event texts are one string, or { en, zh, ja }: the reader's, else
+      // English, else Chinese, else Japanese (the server sends every text
+      // with its fallbacks filled in; strings still work).
+      const pick = (o) => {
+        if (o == null) return "";
+        if (typeof o !== "object") return String(o);
+        for (const k of [lang, "en", "zh", "ja"]) if (o[k] != null && String(o[k]).trim()) return String(o[k]);
+        return "";
+      };
+
+      function who(p, sub) {
+        const box = el("div", "who");
+        if (p?.photo) { const i = el("img"); i.src = p.photo; i.alt = ""; box.append(i); }
+        else box.append(el("div", "ph", [...(pick(p?.name) || "?")][0]));
+        const txt = el("div");
+        txt.append(el("b", "", pick(p?.name)), el("span", "", sub ?? pick(p?.title)));
+        box.append(txt);
+        return box;
+      }
+      function linkBtn(url, label) { const a = el("a", "btn"); a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer"; a.append(el("span", "", label), el("span", "", "↗")); return a; }
+
+      // Opened over Maker's chat: the back button closes it (back to the chat).
+      const EMBED = window.parent !== window;
+      if (EMBED) {
+        $("back").addEventListener("click", (e) => { e.preventDefault(); window.parent.postMessage("maker-guide-close", location.origin); });
+      }
+
+      function render() {
+        document.documentElement.lang = { zh: "zh-Hant", ja: "ja" }[lang] ?? "en";
+        // Only this event's languages get a button.
+        if (data?.languages) for (const b of document.querySelectorAll("[data-lang]")) b.hidden = !data.languages.includes(b.dataset.lang);
+        $("back").textContent = EMBED ? t("back") : "← MAKER";
+        for (const b of document.querySelectorAll("[data-lang]")) b.setAttribute("aria-pressed", String(b.dataset.lang === lang));
+        if (!data) return;
+        const d = String(data.date ?? "").match(/\d{4}-\d{2}-\d{2}/)?.[0]?.replace(/-/g, "") ?? "";
+        $("when").textContent = [d, String(data.time).match(/\d{1,2}:\d{2}[–-]\d{1,2}:\d{2}/)?.[0], pick(data.venue).replace(/\s*[(（].*[)）]$/, "").replace(/\s+Company$/, "")].filter(Boolean).join(" · ");
+        $("hero-box").textContent = t("title");
+        document.title = `Maker · ${t("title")}`;
+        const sections = [["s-agenda", "agenda", "jumpAgenda"], ["s-demos", "demos", "jumpDemos"], ["s-tables", "tables", "jumpTables"], ["s-people", "people", "jumpPeople"], ["s-food", "food", "jumpFood"], ["s-links", "links"], ["s-about", "about"]];
+        for (const [id, key] of sections) $(id).textContent = `> ${t(key).replace("{n}", data.demos.length)}`;
+        // Scroll without changing the address (no extra Back steps inside Maker).
+        $("jump").replaceChildren(...sections.filter((s) => s[2]).map(([id, , j]) => { const a = el("a", "", t(j)); a.href = `#${id}`; a.addEventListener("click", (e) => { e.preventDefault(); $(id).scrollIntoView({ behavior: "smooth" }); }); return a; }));
+
+        // Agenda: each demo round lists its three speakers.
+        $("agenda").replaceChildren(...data.schedule.map((s) => {
+          const row = el("div", "slot");
+          const body = el("div");
+          body.append(el("b", "", pick(s)));
+          const round = /round 1|第一輪/i.test(s.en + s.zh) ? 1 : /round 2|第二輪/i.test(s.en + s.zh) ? 2 : 0;
+          if (round) {
+            const ul = el("ul");
+            for (const dm of data.demos.filter((x) => x.round === round)) {
+              const li = el("li");
+              li.append(el("strong", "", `Demo ${dm.n} · ${pick(dm.speaker.name)}`), document.createTextNode(` — ${pick(dm)}`));
+              ul.append(li);
+            }
+            body.append(ul);
+          }
+          row.append(el("time", "", s.time), body);
+          return row;
+        }));
+
+        // The demo speakers.
+        $("demos").replaceChildren(...data.demos.map((dm) => {
+          const c = el("div", "card");
+          c.append(el("span", "tag", `DEMO ${dm.n} · ${dm.round === 1 ? t("round1") : t("round2")}`), who(dm.speaker));
+          c.append(el("p", "title", pick(dm.title)), el("p", "", pick(dm)));
+          const q = pick(dm.ask);
+          if (q) { const a = el("p", "ask"); a.append(el("b", "", t("ask")), document.createTextNode(q)); c.append(a); }
+          if (dm.speaker.link) c.append(linkBtn(dm.speaker.link, t("site")));
+          else if (dm.speaker.linkedin) c.append(linkBtn(dm.speaker.linkedin, t("linkedin")));
+          return c;
+        }));
+
+        // Topic tables.
+        $("tables").replaceChildren(...data.tables.map((tb) => {
+          const c = el("div", "card");
+          const h = el("div", "table-head");
+          h.append(el("b", "", `TABLE ${tb.table}`), el("span", "", pick(tb.language)));
+          c.append(h, el("p", "title", pick(tb.topic)));
+          const line = pick(tb);
+          if (line) c.append(el("p", "", line));
+          const l = el("div", "lead");
+          if (tb.lead?.photo) { const i = el("img"); i.src = tb.lead.photo; i.alt = ""; l.append(i); }
+          // Topic Lead: name, and what makes them worth sitting with (their title).
+          const txt = el("div");
+          txt.append(el("span", "", t("lead")), el("strong", "", pick(tb.lead?.name)));
+          if (pick(tb.lead?.title)) txt.append(el("em", "", pick(tb.lead.title)));
+          l.append(txt);
+          c.append(l);
+          return c;
+        }));
+
+        // Host and special guests.
+        $("people").replaceChildren(...data.people.map((p) => {
+          const c = el("div", "card");
+          c.append(who(p));
+          const r = pick(p.role);
+          if (r) c.append(el("p", "role", r));
+          if (p.linkedin) c.append(linkBtn(p.linkedin, t("linkedin")));
+          return c;
+        }));
+
+        // Food: the note, every dish (vegetarian first, marked), the drinks.
+        const menu = el("ul", "menu");
+        for (const m of data.menu ?? []) {
+          const li = el("li", m.vegetarian ? "veg" : "");
+          // "2 large" → 大 × 2 / L × 2; anything else as written.
+          const [n, size] = String(m.count ?? "").split(" ");
+          const sized = /^\d+$/.test(n) && ["small", "large"].includes(size);
+          const count = sized && lang === "zh" ? `${size === "small" ? "小" : "大"} × ${n}` : sized && lang === "ja" ? `${size === "small" ? "S" : "L"}サイズ × ${n}` : String(m.count ?? "");
+          const tag = pick(m.tag);
+          li.append(el("b", "", pick(m.name)), el("span", "", ` ${[count, tag].filter(Boolean).join(" · ")}`));
+          menu.append(li);
+        }
+        $("food").replaceChildren(el("p", "", pick(data.food)), menu, el("p", "drinks", pick(data.drinks)));
+        $("links").replaceChildren(...Object.values(data.links).map((l) => linkBtn(l.url, pick(l.label))));
+        // Maker's own story (persona.md `about`), last: his sections, then who built him.
+        const a = data.about ?? {};
+        $("s-about").hidden = $("about").hidden = !a.sections?.length;
+        const plain = (x) => String(pick(x) || "").replace(/\*\*/g, "");
+        $("about").replaceChildren(
+          ...(a.sections ?? []).flatMap((sec) => [el("p", "about-p", "").appendChild(el("b", "", plain(sec.title))).parentNode, el("p", "about-p", plain(sec.text))]),
+          ...(a.author?.name ? [el("p", "about-p", `— ${pick(a.author.name)}, ${plain(a.author.role)}`), ...(/^https:\/\/([a-z]+\.)?linkedin\.com\//.test(a.author.linkedin ?? "") ? [linkBtn(a.author.linkedin, "LinkedIn")] : [])] : []),
+        );
+      }
+
+      for (const b of document.querySelectorAll("[data-lang]")) b.addEventListener("click", () => { lang = b.dataset.lang; store.set("maker-lang-v2", lang); render(); gateText(); });
+      function gateText() { $("gate-text").textContent = t("gate"); $("gate-btn").textContent = t("gateBtn"); }
+
+      async function main() {
+        render();
+        let me = null;
+        try { me = JSON.parse(store.get("maker-me") || "null"); } catch {}
+        if (!me?.token) { gateText(); $("gate").hidden = false; return; }
+        try {
+          const res = await fetch("/api/guide", { cache: "no-store", headers: { "X-Token": me.token } });
+          if (res.status === 401) { gateText(); $("gate").hidden = false; return; }
+          data = await res.json();
+          $("guide").hidden = false;
+          render();
+          if (location.hash) document.getElementById(location.hash.slice(1))?.scrollIntoView();
+        } catch {
+          $("gate-text").textContent = t("lost"); $("gate").hidden = false; $("gate-btn").hidden = true;
+        }
+      }
+      main();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,67 @@
+/* Thank-you screen: the door's layout system (door/style.css) with its own
+   grid, the countdown and fireworks. */
+
+.door.seeyou {
+  --k-fest-red: #d7102b;
+  --d-head-gap: 18px; --d-inner-pad: 8px;
+  --d-rows: minmax(0, 1fr) auto;
+  --d-areas: "head qr stage" "count qr credit";
+  --d-head-min: 0px;
+  --d-t-head: 64px; --d-t-zh: 44px; --d-t-caption: 22px;
+  --d-t-small: 18px; --d-t-clock: 96px; --d-count-pt: 20px;
+}
+.door.seeyou.portrait {
+  --d-gap-y: 32px; --d-head-gap: 22px; --d-inner-pad: 16px;
+  --d-cols: 560px minmax(0, 1fr); --d-rows: minmax(0, 1fr) auto auto auto;
+  --d-areas: "head head" "qr stage" "count count" ". credit";
+  --d-head-min: 440px;
+  --d-t-head: 104px; --d-t-zh: 60px; --d-t-caption: 30px;
+  --d-t-small: 24px; --d-t-clock: 168px; --d-count-pt: 32px;
+  --d-qr: 480px;
+}
+
+.seeyou .grid { padding: var(--d-inner-pad) 0; }
+
+.seeyou .head { position: relative; justify-content: flex-end; min-height: var(--d-head-min); gap: var(--d-head-gap); }
+.seeyou .head > :not(.fireworks) { position: relative; }
+.seeyou .display { font-size: var(--d-t-head); white-space: nowrap; }
+.seeyou .box.zh { font-size: var(--d-t-zh); background: var(--k-fest-red); color: #fff; }
+/* Fireworks: slow pixel bursts behind the headline. */
+.fireworks { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.fw { position: absolute; opacity: 0; transform: translate(-50%, -50%); animation: fwBurst 9s cubic-bezier(.2, .7, .3, 1) infinite; }
+.fw svg { width: 100%; height: 100%; display: block; }
+@keyframes fwBurst {
+  0% { transform: translate(-50%, -50%) scale(.15); opacity: 0; }
+  8% { opacity: 1; }
+  55% { transform: translate(-50%, -50%) scale(1); opacity: .95; }
+  100% { transform: translate(-50%, -50%) scale(1.06); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .fw { animation: none; opacity: .55; } }
+
+/* Countdown */
+.clockbox {
+  grid-area: count; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; min-width: 0;
+  background: var(--k-bg); padding-top: var(--d-count-pt); border-top: 2px solid var(--k-rule);
+}
+.clock-label { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.clock-label b { font-weight: 800; font-size: var(--d-t-step); line-height: 1.1; }
+.clock-label i { font-style: normal; font-family: var(--k-font-cjk); font-weight: 700; font-size: var(--d-t-stepzh); color: var(--k-ink2); }
+.clock { font-family: var(--k-font-mono); font-weight: 800; font-size: var(--d-t-clock); line-height: .95; letter-spacing: -.02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.clock-foot { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: var(--d-t-stepzh); font-weight: 600; }
+.clock-foot b { font-family: var(--k-font-cjk); font-weight: 700; }
+.until { background: var(--k-fest-red); color: #fff; font-family: var(--k-font-mono); font-weight: 800; font-size: var(--d-t-label); letter-spacing: .04em; padding: 6px 10px; white-space: nowrap; }
+
+/* QR caption */
+.seeyou .qr-caption b { font-weight: 800; font-size: var(--d-t-step); line-height: 1.15; }
+.seeyou .qr-caption b.zh { font-family: var(--k-font-cjk); font-weight: 700; font-size: var(--d-t-stepzh); line-height: 1.3; }
+.seeyou .qr-caption .small { font-size: var(--d-t-small); font-weight: 500; line-height: 1.4; }
+.seeyou .credit { align-items: flex-end; }
+
+/* Caption bar: what Maker is saying. */
+.capbar { background: #0b0c10; color: #fff; justify-content: flex-start; gap: 20px; }
+.capbar .who { font-weight: 800; letter-spacing: .06em; white-space: nowrap; flex: none; }
+.capbar .caption { flex: 1; font-family: var(--k-font-body); font-size: var(--d-t-caption); line-height: 1.25; }
+.capbar .caption:lang(zh-Hant) { font-family: var(--k-font-cjk); }
+.capbar .tag { font-weight: 700; color: #fff; white-space: nowrap; flex: none; }
+.capbar .warn { color: #ffd84d; }
+.until:empty { display: none; }

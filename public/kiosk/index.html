@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>Maker</title>
+    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <!-- data-theme / data-device / data-state are set by app.js.
+       The screen is laid out at a fixed design size (1440×900 or 768×1024)
+       and zoomed to fit, so it looks the same on any laptop or tablet. -->
+  <body data-theme="blue" data-device="laptop" data-state="attract">
+    <main id="screen" class="screen">
+      <header class="bar bar-top">
+        <span id="bar-left"></span>
+        <span id="bar-mid"></span>
+        <span id="bar-right"></span>
+      </header>
+
+      <div id="layout" class="layout">
+        <!-- Stage: the live avatar. Never removed from the page, only hidden,
+             so the 3D engine keeps its session across screens. -->
+        <section class="stage" aria-label="Avatar">
+          <i class="crop tl"></i><i class="crop tr"></i><i class="crop bl"></i><i class="crop br"></i>
+          <span class="stage-label"><img src="/brand/perxona-white.png" alt="Perxona" /> LIVE 3D</span>
+          <sv-presenter></sv-presenter>
+          <span id="stage-chip" class="stage-chip" hidden></span>
+        </section>
+
+        <!-- 01 ATTRACT -->
+        <!-- 01 ATTRACT = the entrance poster: scan to talk on your own phone.
+             Tapping the screen still starts a conversation right here. -->
+        <section class="copy only-attract">
+          <p id="cover-sub" class="mono-sm"></p>
+          <span id="poster-box" class="box box-poster" lang="zh-Hant"></span>
+          <h1 id="poster-title" class="display poster"></h1>
+          <p class="mono-sm"><span class="tap-hint" lang="zh-Hant">或點一下螢幕，直接在這裡聊 · or tap to talk here</span></p>
+        </section>
+        <section class="posterqr only-attract">
+          <div class="qr big"><img id="app-qr" alt="" /></div>
+          <p class="mono-sm strong">&gt; OPEN CAMERA · NO APP · NO LOGIN<br /><span class="dim">中文 / EN / 日本語<span class="cursor">▍</span></span></p>
+        </section>
+        <section class="meta only-attract">
+          <p id="cover-when" class="num"></p>
+          <p id="cover-doors" class="box2 doors"></p>
+        </section>
+
+        <!-- 02–05 TALK + ANSWER -->
+        <section class="main only-talk">
+          <div class="langs-row only-langs">
+            <div class="langs" role="group" aria-label="Language">
+              <button type="button" data-lang="zh" lang="zh-Hant">中文</button>
+              <button type="button" data-lang="en">EN</button>
+              <button type="button" data-lang="ja" lang="ja">日本語</button>
+            </div>
+            <svg class="pix pix-inv" data-icon="inv" aria-hidden="true"></svg>
+          </div>
+
+          <div class="block only-idle">
+            <h1 id="hi" class="display hi"></h1>
+            <span id="greet-box" class="box box-greet"></span>
+            <p id="greet-sub" class="sub"></p>
+          </div>
+
+          <div class="block only-listening">
+            <span id="listen-box" class="box box-greet listen"></span>
+            <p class="transcript"><span>「</span><span id="transcript"></span><span class="cursor">▍</span></p>
+            <div id="meter" class="meter" aria-hidden="true"></div>
+          </div>
+
+          <div class="block only-thinking asked">
+            <p class="mono-sm dim">&gt; YOU ASKED / 你問</p>
+            <p id="asked" class="asked-q"></p>
+          </div>
+          <div class="block only-thinking">
+            <span class="box box-hero" lang="zh-Hant">想一下…</span>
+            <p class="mono-sm strong"><span class="waitbar" data-bar="10"></span> THINKING<br /><span class="dim">&gt; matching attendees · checking topic tables</span></p>
+          </div>
+
+          <div class="block only-answer">
+            <p id="answer-q" class="mono-sm dim"></p>
+            <p id="answer" class="answer" aria-live="polite"></p>
+          </div>
+        </section>
+
+        <section id="cards" class="cards only-answer">
+          <div id="people" class="people"></div>
+          <div id="tables" class="tables"></div>
+        </section>
+
+        <section id="optin" class="optin only-talk-qr" hidden></section>
+
+        <form id="dock" class="dock only-talk" autocomplete="off">
+          <button id="ptt" class="talk" type="button">
+            <svg class="pix pix-mic" data-icon="mic" aria-hidden="true"></svg>
+            <span class="talk-text"><strong id="talk-label"></strong><small id="talk-sub"></small></span>
+            <span id="talk-right" class="talk-right"></span>
+          </button>
+          <label class="field">
+            <input id="q" maxlength="300" enterkeyhint="send" />
+            <button id="send" type="submit" aria-label="Send">→</button>
+          </label>
+        </form>
+
+        <!-- 06 OFFLINE -->
+        <section class="head only-offline">
+          <p class="mono-sm strong"><span class="box tag">OFFLINE</span> <span class="dim">✕ NETWORK · RETRYING <span class="waitbar" data-bar="10"></span></span></p>
+          <div class="row-end">
+            <h1 class="display otitle">TONIGHT'S AGENDA</h1>
+            <svg class="pix pix-boba" data-icon="boba" aria-hidden="true"></svg>
+          </div>
+          <span id="offline-box" class="box box-msg"></span>
+          <p id="offline-sub" class="sub small"></p>
+        </section>
+        <ol id="schedule" class="sched only-offline"></ol>
+        <section id="board-qrs" class="qrs only-offline"></section>
+      </div>
+
+      <footer class="bar bar-bottom">
+        <span>&gt; <span id="status"></span></span>
+        <span>[<span id="counter">01</span>/06]</span>
+      </footer>
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

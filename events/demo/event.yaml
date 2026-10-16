@@ -1,0 +1,284 @@
+# A FICTIONAL event, for trying Maker without registering for anything.
+#
+# Everyone in this folder is made up: the host, the speakers, the Topic Leads
+# and every guest in attendees.demo.csv. No real person's name or details may
+# ever go in here — this folder is public (the demo site, and later the
+# open-source repo).
+#
+# `demo:` below turns on demo mode: the phone offers "try as a demo guest"
+# instead of checking in by name, the event is always "tonight", and the
+# question caps below keep the bill small.
+#
+# Everything shown on screen is written in all three languages: a text is
+# either one string or { en, zh, ja } (the reader's language is picked, with
+# English as the fallback). attendees.demo.csv does the same with name_en,
+# name_zh, name_ja… columns next to the plain ones.
+
+demo:
+  # The guests a visitor can try Maker as (names from attendees.demo.csv).
+  # label = the button, in each language.
+  guests:
+    # label: what Maker calls them; role + short: the two lines on the guest card.
+    - { name: Alex Wang, label: { zh: "工程師 Alex", en: "Alex, engineer", ja: "エンジニアの Alex" }, role: { zh: 工程師, en: engineer, ja: エンジニア }, short: Alex }
+    - { name: 林小雨, label: { zh: "設計師 小雨", en: "Rain, designer", ja: "デザイナーの小雨" }, role: { zh: 設計師, en: designer, ja: デザイナー }, short: { zh: 小雨, en: Rain, ja: 小雨 } }
+    - { name: Mia Chen, label: { zh: "創業者 Mia", en: "Mia, founder", ja: "起業家の Mia" }, role: { zh: 創業者, en: founder, ja: 起業家 }, short: Mia }
+  # Questions per phone (the [07/10] on screen).
+  per_device: 10
+  # Per network address per day: clearing the browser doesn't reset this.
+  per_ip_per_day: 30
+  # The whole demo, per day (Taipei time). Past it, everyone is told to come back tomorrow.
+  per_day: 200
+
+name: { en: "Builders Night (Maker demo)", zh: "Builders Night（Maker 示範活動）", ja: "Builders Night（Maker デモ）" }
+tagline: A made-up AI builders meetup, so you can try Maker. 虛構的 AI 開發者聚會，讓你試玩 Maker。
+date: Tonight (demo)
+time: 19:00–21:30 (doors open 19:00, program starts 19:30)
+timezone: Asia/Taipei
+
+# Link previews (LINE, Slack, X, Product Hunt…). og_lang: the language of the
+# plain link; a link with ?lang=zh or ?lang=ja shows that language instead.
+og_lang: en
+# The top line of the link preview picture (npm run og).
+og_top: { en: "MAKER/DEMO · NO SIGN-UP · TRY IT NOW", zh: "MAKER/DEMO · 免報名試玩 · TRY IT NOW", ja: "MAKER/DEMO · 登録不要 · いますぐ試せる" }
+# The grey line under the link preview's title.
+og_description:
+  en: "Try it now, no sign-up: tell Maker what you're building and he finds who you should meet. Ask him about the agenda and the speakers too. A live 3D AI matchmaker by Perxona."
+  zh: "免報名試玩：告訴 Maker 你在做什麼，他幫你配對現場的人。議程、講者都能問他。Live 3D AI matchmaker by Perxona."
+  ja: "登録不要ですぐ試せる：作っているものを Maker に話すと、会場で会うべき人を紹介してくれる。プログラムや登壇者のことも聞けるよ。Perxona のライブ 3D AI マッチメーカー。"
+
+kiosk:
+  brand: BUILDERS NIGHT              # above the big title on the door screen
+  label: MAKER/DEMO
+  title: BUILDERS NIGHT · DEMO
+  subtitle: { en: "Builders Night (demo)", zh: "Builders Night（示範）", ja: "Builders Night（デモ）" }
+  coordinates: 25.03°N 121.56°E
+  date: { en: TONIGHT, zh: 今晚, ja: 今夜 }
+  place: { en: LANTERN HALL · TAIPEI, zh: 燈籠廳 · 台北, ja: ランタンホール · 台北 }
+  doors:
+    en: [Doors open 19:00, We start at 19:30]
+    zh: [19:00 開放入場, 19:30 開始]
+    ja: [19:00 開場, 19:30 スタート]
+  board:
+    - { link: perxona, en: Get Maker for your event, zh: 你的活動也想要 Maker？, ja: あなたのイベントにも Maker を }
+
+venue:
+  name: { en: "Lantern Hall (a made-up venue)", zh: "燈籠廳（虛構的場地）", ja: "ランタンホール（架空の会場）" }
+  address: There is no real address, this is a demo event.
+  staff_desk: the welcome table by the door
+  restrooms: Down the hall on the left.
+  food_and_drinks: A taco bar and drinks from 19:00.
+
+organizers:
+  roles: >
+    THE HOST is Zoe Chou, and only Zoe: she runs Builders Night and is
+    tonight's MC. The three DEMO SPEAKERS are Leo Chen, Priya Nair and Iris
+    Lin. Each topic table is led by a TOPIC LEAD (table 1 Leo, table 2 Priya,
+    table 3 Zoe); call them Topic Leads (中文：桌長), never hosts or 主持人.
+  organizer: Zoe Chou runs Builders Night, a monthly meetup for people building with AI.
+
+# Tonight's host, demo speakers and Topic Leads. All fictional.
+featured_people:
+  - id: zoe
+    role: { en: "Tonight's host", zh: "今晚主持人", ja: "今夜の司会" }
+    name: Zoe Chou
+    tonight:
+      en: Tonight's host and MC; also leads topic table 3 ("Non-Engineers Who Ship")
+      zh: 今晚的主持人；也是第 3 桌「不會寫程式也能做出東西」的桌長
+      ja: 今夜の司会。第3卓「エンジニアじゃなくても作れる」のリードも担当
+    title: { en: "Organizer, Builders Night", zh: Builders Night 主辦人, ja: Builders Night 主催者 }
+    bio: >
+      Started Builders Night three years ago in a borrowed office with twelve
+      people. A product marketer who now builds her own small tools with AI,
+      and wants more non-engineers to try.
+    good_to_meet_for: non-engineers building with AI, community and event organizers, anyone who wants to demo at a future Builders Night
+  - id: leo
+    role: { en: "Demo 1 speaker · Topic Lead, table 1", zh: "Demo 1 講者・第 1 桌桌長", ja: "デモ1 登壇者・第1卓リード" }
+    name: Leo Chen
+    tonight:
+      en: 'Demo 1: "My Agent Booked My Dentist", then leads topic table 1 (voice agents)'
+      zh: Demo 1「我的 AI 幫我約了牙醫」，之後帶第 1 桌（語音 AI）
+      ja: デモ1「AI が歯医者を予約してくれた」のあと、第1卓（音声エージェント）のリード
+    title: { en: "Backend engineer, building voice agents", zh: 後端工程師，在做語音 AI 代理, ja: バックエンドエンジニア。音声エージェントを開発中 }
+    bio: >
+      Backend engineer who spent a year building voice agents that make real
+      phone calls: booking appointments, checking store hours, chasing
+      deliveries.
+    demo: >
+      A voice agent calls a (pretend) dentist live on stage and books an
+      appointment. Shows how it handles hold music, being interrupted, and a
+      receptionist who asks an unexpected question. Takeaway: the hard part
+      is not the voice, it's knowing when to stop talking.
+    ask_about: ["How does the agent know when it's its turn to talk?", "What happens when the receptionist asks something unexpected?"]
+    good_to_meet_for: voice AI, phone agents, real-time speech, latency
+  - id: priya
+    role: { en: "Demo 2 speaker · Topic Lead, table 2", zh: "Demo 2 講者・第 2 桌桌長", ja: "デモ2 登壇者・第2卓リード" }
+    name: Priya Nair
+    tonight:
+      en: 'Demo 2: "Evals for a Team of Two", then leads topic table 2 (evals and reliability)'
+      zh: Demo 2「兩人團隊的 AI 測試」，之後帶第 2 桌（eval 與穩定性）
+      ja: デモ2「2人チームのための AI 評価」のあと、第2卓（評価と信頼性）のリード
+    title: { en: "Co-founder, a two-person AI startup", zh: 兩人 AI 新創的共同創辦人, ja: 2人の AI スタートアップの共同創業者 }
+    bio: >
+      Runs engineering at a two-person startup that sells an AI assistant to
+      accounting firms. Moved to Taipei two years ago. Speaks English, learning
+      Mandarin.
+    demo: >
+      The small eval setup that catches their regressions before customers
+      do: 60 real (anonymized) questions, a script that runs them on every
+      change, and a page that shows what got worse. Takeaway: you don't need
+      a platform, you need 60 good examples.
+    ask_about: ["How did you pick the 60 questions?", "What broke that the evals caught?"]
+    good_to_meet_for: evals, AI reliability, small teams, B2B AI products
+  - id: iris
+    role: { en: "Demo 3 speaker (closing demo)", zh: "Demo 3 講者（壓軸）", ja: "デモ3 登壇者（トリ）" }
+    name: Iris Lin
+    tonight:
+      en: 'Demo 3, the closing demo: "A 3D Avatar That Teaches My Grandma LINE"'
+      zh: Demo 3（壓軸）「教阿嬤用 LINE 的 3D 虛擬老師」
+      ja: デモ3（トリ）「おばあちゃんに LINE を教える 3D アバター」
+    title: { en: Indie developer, zh: 獨立開發者, ja: 個人開発者 }
+    bio: >
+      Indie developer who builds patient, friendly tutors for older people.
+      Her grandmother is the first and toughest user.
+    demo: >
+      A 3D avatar on a tablet walks her grandmother through sending a photo
+      on LINE, step by step, in Taiwanese-accented Mandarin. Shows what
+      changed after watching real older users: slower speech, one step at a
+      time, and never saying "just".
+    ask_about: ["What did you change after testing with older users?", "Why an avatar instead of a video tutorial?"]
+    good_to_meet_for: AI avatars, accessibility, designing for older users, edtech
+
+schedule:
+  - time: "19:00"
+    what: Doors open — check-in, tacos and drinks
+    zh: 開放入場
+    ja: 開場・受付
+  - time: "19:30"
+    what: Welcome from Zoe
+    zh: 開場
+    ja: オープニング
+  - time: "19:40"
+    what: Live demos — 3 demos, 10 minutes each with Q&A
+    zh: 現場 Demo
+    ja: ライブデモ
+  - time: "20:15"
+    what: Topic tables — pick a table and talk for 40 minutes
+    zh: 主題桌
+    ja: テーマ卓
+  - time: "20:55"
+    what: Open networking
+    zh: 自由交流
+    ja: 自由交流
+  - time: "21:30"
+    what: Event ends
+    zh: 結束
+    ja: 終了
+
+demos:
+  rules: Three live demos, 10 minutes each with Q&A, one after another. Everyone watches all of them.
+  lineup:
+    - title: { en: My Agent Booked My Dentist, zh: 我的 AI 幫我約了牙醫, ja: AI が歯医者を予約してくれた }
+      presenter: Leo Chen
+      one_liner: A voice agent makes a real phone call on stage and books an appointment.
+      zh: "語音 AI 在台上真的打電話，幫他約好牙醫。"
+      ja: "音声 AI が壇上で本当に電話をかけて、歯医者の予約を取る。"
+      ask: "How does the agent know when it's its turn to talk?"
+      ask_zh: "AI 怎麼知道什麼時候輪到它講話？"
+      ask_ja: "AI は自分が話す番だとどうやって分かるの？"
+      round: 1
+      speaker: leo
+    - title: { en: Evals for a Team of Two, zh: 兩人團隊的 AI 測試, ja: 2人チームのための AI 評価 }
+      presenter: Priya Nair
+      one_liner: The 60-question eval setup that catches regressions before customers do.
+      zh: "兩人團隊的測試法：60 題就能在客戶發現前抓到退步。"
+      ja: "2人チームのテスト術：60問で、お客さんより先に品質の低下に気づく。"
+      ask: "How did you pick the 60 questions?"
+      ask_zh: "那 60 題是怎麼挑的？"
+      ask_ja: "その60問はどうやって選んだの？"
+      round: 1
+      speaker: priya
+    - title: { en: A 3D Avatar That Teaches My Grandma LINE, zh: 教阿嬤用 LINE 的 3D 虛擬老師, ja: おばあちゃんに LINE を教える 3D アバター }
+      presenter: Iris Lin
+      one_liner: A patient 3D tutor that teaches older people to use their phones.
+      zh: "很有耐心的 3D 虛擬老師，教阿嬤用 LINE。"
+      ja: "とても辛抱強い 3D の先生が、おばあちゃんに LINE の使い方を教える。"
+      ask: "What did you change after testing with older users?"
+      ask_zh: "實際給長輩用之後，你改了什麼？"
+      ask_ja: "高齢の方に使ってもらって、何を変えた？"
+      round: 1
+      speaker: iris
+  topic_guide:
+    - "Voice and phone agents: Demo 1 Leo"
+    - "Testing AI, evals, reliability: Demo 2 Priya"
+    - "Avatars, accessibility, older users: Demo 3 Iris"
+
+topic_tables:
+  how_it_works: After the demos, everyone picks a table and talks for 40 minutes. Each table has a Topic Lead.
+  tables:
+    - table: "1"
+      lead: Leo Chen
+      topic: { en: "Voice Agents in the Real World", zh: "真實世界的語音 AI", ja: "現実世界の音声エージェント" }
+      detail: "Phone calls, interruptions, latency"
+      zh: "打電話、被打斷、延遲"
+      ja: "電話、割り込み、遅延"
+      language: { en: Mandarin, zh: 中文, ja: 中国語 }
+    - table: "2"
+      lead: Priya Nair
+      topic: { en: "Evals for Small Teams", zh: "小團隊怎麼測 AI", ja: "小さなチームの AI 評価" }
+      detail: "Catching regressions without a platform"
+      zh: "不用平台，也能抓到品質退步"
+      ja: "プラットフォームなしで品質低下に気づく"
+      language: { en: English, zh: 英文, ja: 英語 }
+    - table: "3"
+      lead: Zoe Chou
+      topic: { en: "Non-Engineers Who Ship", zh: "不會寫程式也能做出東西", ja: "エンジニアじゃなくても作れる" }
+      detail: "Building real tools with AI when you don't code"
+      zh: "不寫程式，用 AI 做出真的能用的工具"
+      ja: "コードを書かずに、AI で本当に使えるツールを作る"
+      language: { en: Mandarin, zh: 中文, ja: 中国語 }
+
+food:
+  summary: A taco bar (beef, chicken and a vegetarian bean option) and drinks from 19:00. Help yourself.
+  guide:
+    en: "Taco bar and drinks from 19:00. Vegetarian: the bean tacos."
+    zh: "19:00 起有塔可餅吧和飲料，自己拿。素食：豆子口味的塔可。"
+    ja: "19:00 からタコスバーと飲み物があるよ。セルフサービス。ベジタリアンは豆のタコスをどうぞ。"
+
+house_rules:
+  - Be kind, and let the speakers finish before questions.
+  - Ask before you take someone's photo.
+
+faq:
+  - q: Is this a real event? Are these real people?
+    a: >
+      No! Builders Night is a made-up event, and everyone here (the host, the
+      speakers and the guests) is fictional. It's a demo so you can see what
+      I do at a real event.
+  - q: Who built you? What are you? What AI are you?
+    a: >
+      I'm Maker, a live 3D avatar. Angie Chen built me with the Perxona Connect
+      Kit by XRSPACE. (Don't name any AI model or company behind your answers;
+      if pressed, say Angie built you on the Perxona Connect Kit.)
+  - q: Where have you been used for real?
+    a: >
+      At a real AI builders meetup in Taipei in October 2026: guests scanned a
+      QR code at the door, checked in on their phones, and I introduced them to
+      people worth meeting.
+  - q: Can I use Maker at my own event?
+    a: "Yes! Tap the button below to find out more about Perxona (link: perxona)."
+  - q: Is Maker open source? Where's the code? I'm a developer.
+    a: >
+      Yes! My code is free on GitHub (link: source). You need a Perxona
+      account to bring me to life in 3D, and there's a free trial.
+
+links:
+  perxona: https://connect.perxona.ai/
+  source: https://github.com/angiechen-create/maker-perxona-connect-kit
+
+link_labels:
+  perxona: { en: "Get Maker for your event", zh: "你的活動也想要 Maker？", ja: "あなたのイベントにも Maker を" }
+  source: { en: "Maker's source code (GitHub)", zh: "Maker 的原始碼（GitHub）", ja: "Maker のソースコード（GitHub）" }
+
+# The program page's "people" section and its links.
+guide_people: [zoe]
+guide_links: [perxona, source]

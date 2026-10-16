@@ -1,0 +1,128 @@
+/* Door screen — tokens and layout of the "BLUE" design.
+   The screen is laid out at its design size (1440×900 or 1080×1920) and
+   scaled to fit the actual display by app.js, so it looks the same on any
+   laptop or TV. */
+
+:root {
+  --k-bg: #1f3bff;
+  --k-grid: #3a55ff;
+  --k-ink: #ffffff;
+  --k-ink2: #d6dcff;
+  --k-rule: #7086ff;
+  --k-stage-line: #9aa9ff;
+  --k-box-bg: #ffffff;
+  --k-box-ink: #0b0c10;
+  --k-font-display: "Archivo", "Noto Sans TC", "PingFang TC", sans-serif;
+  --k-font-body: "Archivo", "Noto Sans TC", "PingFang TC", sans-serif;
+  --k-font-mono: "JetBrains Mono", "Noto Sans TC", "PingFang TC", ui-monospace, monospace;
+  --k-font-cjk: "Noto Sans TC", "PingFang TC", "Archivo", sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; }
+html, body { height: 100%; overflow: hidden; background: var(--k-bg); }
+body { color: var(--k-ink); font-family: var(--k-font-body); -webkit-font-smoothing: antialiased; cursor: none; }
+
+/* ── Landscape 1440×900 ─────────────────────────────────────────────── */
+.door {
+  --k-w: 1440px; --k-h: 900px; --k-pad: 40px; --k-grid-cols: 6; --k-grid-rows: 4;
+  --d-bar-h: 64px; --d-gap-x: 40px; --d-gap-y: 24px; --d-head-gap: 20px;
+  --d-cols: minmax(0, 1fr) 404px 300px; --d-rows: auto minmax(0, 1fr) auto;
+  --d-areas: "head qr stage" "steps qr stage" "count qr credit";
+  --d-t-event: 20px; --d-t-label: 18px; --d-t-head: 78px; --d-t-zh: 56px;
+  --d-t-stepnum: 32px; --d-t-step: 26px; --d-t-stepzh: 20px; --d-t-count: 88px; --d-t-url: 26px;
+  --d-step-num: 56px; --d-step-pad: 14px; --d-steps-justify: flex-end;
+  --d-qr: 340px; --d-qr-quiet: 32px; --d-logo-h: 26px; --d-credit-justify: flex-start;
+
+  position: absolute; left: 50%; top: 50%;
+  width: var(--k-w); height: var(--k-h);
+  transform: translate(-50%, -50%) scale(var(--fit, 1));
+  overflow: hidden;
+  background-color: var(--k-bg);
+  background-image: linear-gradient(to right, var(--k-grid) 1px, transparent 1px), linear-gradient(to bottom, var(--k-grid) 1px, transparent 1px);
+  background-size: calc(100% / var(--k-grid-cols)) 100%, 100% calc(100% / var(--k-grid-rows));
+}
+
+/* ── Portrait 1080×1920 (a TV on a stand) ───────────────────────────── */
+.door.portrait {
+  --k-w: 1080px; --k-h: 1920px; --k-pad: 64px; --k-grid-cols: 4; --k-grid-rows: 8;
+  --d-bar-h: 96px; --d-gap-x: 40px; --d-gap-y: 48px; --d-head-gap: 28px;
+  --d-cols: 600px minmax(0, 1fr); --d-rows: auto auto minmax(0, 1fr) auto;
+  --d-areas: "head head" "qr stage" "steps steps" "count credit";
+  --d-t-event: 26px; --d-t-label: 24px; --d-t-head: 132px; --d-t-zh: 88px;
+  --d-t-stepnum: 44px; --d-t-step: 36px; --d-t-stepzh: 28px; --d-t-count: 120px; --d-t-url: 34px;
+  --d-step-num: 84px; --d-step-pad: 22px; --d-steps-justify: flex-start;
+  --d-qr: 520px; --d-qr-quiet: 40px; --d-logo-h: 34px; --d-credit-justify: flex-end;
+}
+
+.dim { color: var(--k-ink2); }
+
+.bar {
+  position: absolute; left: 0; right: 0; height: var(--d-bar-h); padding: 0 var(--k-pad);
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  font-family: var(--k-font-mono); font-size: var(--d-t-label); letter-spacing: .04em;
+}
+.bar.top { top: 0; }
+.bar.bottom { bottom: 0; color: var(--k-ink2); }
+.bar .event { font-weight: 800; font-size: var(--d-t-event); color: var(--k-ink); }
+.bar .dim { white-space: nowrap; }
+/* What Maker is saying right now (sound may be low at a busy door). */
+.caption { color: var(--k-ink); font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+
+.grid {
+  position: absolute; top: var(--d-bar-h); bottom: var(--d-bar-h); left: var(--k-pad); right: var(--k-pad);
+  display: grid; grid-template-columns: var(--d-cols); grid-template-rows: var(--d-rows); grid-template-areas: var(--d-areas);
+  column-gap: var(--d-gap-x); row-gap: var(--d-gap-y);
+}
+
+.head { grid-area: head; display: flex; flex-direction: column; align-items: flex-start; gap: var(--d-head-gap); min-width: 0; }
+.display { font-family: var(--k-font-display); font-stretch: 125%; font-weight: 900; font-size: var(--d-t-head); line-height: .88; letter-spacing: -.01em; }
+.box { background: var(--k-box-bg); color: var(--k-box-ink); font-family: var(--k-font-cjk); font-weight: 900; font-size: var(--d-t-zh); line-height: 1; padding: .16em .3em; }
+
+.steps { grid-area: steps; display: flex; flex-direction: column; justify-content: var(--d-steps-justify); min-width: 0; }
+.step { display: grid; grid-template-columns: var(--d-step-num) minmax(0, 1fr); align-items: baseline; column-gap: 16px; padding: var(--d-step-pad) 0; border-top: 2px solid var(--k-rule); }
+.step .n { font-family: var(--k-font-mono); font-weight: 800; font-size: var(--d-t-stepnum); line-height: 1; }
+.step > span:last-child, .count > span:last-child { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.step b, .count b { font-weight: 800; font-size: var(--d-t-step); line-height: 1.15; }
+.step i, .count i { font-style: normal; font-family: var(--k-font-cjk); font-weight: 700; font-size: var(--d-t-stepzh); line-height: 1.3; color: var(--k-ink2); }
+
+.count { grid-area: count; display: flex; align-items: center; gap: 20px; min-width: 0; }
+.count[hidden] { display: flex; visibility: hidden; }
+.count-n { font-family: var(--k-font-mono); font-weight: 800; font-size: var(--d-t-count); line-height: .9; }
+
+.qr { grid-area: qr; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 20px; min-width: 0; }
+.qr-tile { background: #fff; padding: var(--d-qr-quiet); line-height: 0; }
+.qr-tile svg { width: var(--d-qr); height: var(--d-qr); display: block; }
+.qr-tile:empty { width: calc(var(--d-qr) + 2 * var(--d-qr-quiet)); height: calc(var(--d-qr) + 2 * var(--d-qr-quiet)); }
+.qr-caption { display: flex; flex-direction: column; gap: 6px; }
+.url { font-family: var(--k-font-mono); font-weight: 800; font-size: calc(var(--d-t-url) * .84); line-height: 1.2; white-space: nowrap; }
+.qr-caption .dim { font-size: var(--d-t-stepzh); font-weight: 600; }
+
+.stage { grid-area: stage; position: relative; min-height: 0; min-width: 0; }
+.stage .c { position: absolute; width: 24px; height: 24px; border: 0 solid var(--k-stage-line); }
+.stage .tl { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.stage .tr { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.stage .bl { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+.stage .br { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+.stage .placeholder {
+  position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+  height: calc(100% - 48px); width: auto; max-width: 100%; object-fit: contain; object-position: bottom;
+  transition: opacity .4s;
+}
+.stage sv-presenter { position: absolute; inset: 2px; display: block; opacity: 0; transition: opacity .4s; }
+body.avatar-ready .stage sv-presenter { opacity: 1; }
+body.avatar-ready .stage .placeholder { opacity: 0; }
+
+.credit { grid-area: credit; display: flex; align-items: center; justify-content: var(--d-credit-justify); gap: 20px; padding: 20px 0 4px; min-width: 0; }
+.credit .dim { font-family: var(--k-font-mono); font-size: var(--d-t-label); letter-spacing: .04em; white-space: nowrap; }
+.credit img { height: var(--d-logo-h); width: auto; display: block; }
+
+.bar .warn { color: #ffd84d; font-weight: 800; }
+
+/* ?still: the poster version — no caption bar text, sound hint or live count. */
+.still #caption, .still #sound, .still #count { visibility: hidden; }
+
+/* The community's name, big, above the headline (door screen and poster). */
+.brandline { align-self: flex-start; white-space: nowrap; font-family: var(--k-font-display); font-stretch: 125%; font-weight: 900; font-size: calc(var(--d-t-head) * .42); line-height: 1; letter-spacing: .01em; color: var(--k-ink); background: transparent; border: 3px solid var(--k-ink); padding: .18em .35em; }
+.brandline span { color: var(--k-ink2); }
+.door.portrait .brandline { font-size: calc(var(--d-t-head) * .3); }
+.door.portrait .head { gap: 18px; }

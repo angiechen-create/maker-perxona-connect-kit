@@ -1,0 +1,10 @@
+/* Meet Maker slide: the door layout, with an entrance — text and QR
+   slide in, Maker pops up from below with a small bounce. Calm after. */
+@keyframes meetIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes meetPop { 0% { opacity: 0; transform: translateY(60%); } 70% { opacity: 1; transform: translateY(-4%); } 100% { transform: none; } }
+.door .head { animation: meetIn .7s ease-out both; }
+.door .steps { animation: meetIn .7s .25s ease-out both; }
+.door .qr { animation: meetIn .7s .45s ease-out both; }
+.door .count { animation: meetIn .7s .6s ease-out both; }
+.door .stage { animation: meetPop 1s .2s cubic-bezier(.2, .8, .3, 1.2) both; }
+@media (prefers-reduced-motion: reduce) { .door * { animation: none !important; } }

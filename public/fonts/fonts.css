@@ -1,0 +1,18 @@
+/* Self-hosted so the kiosk keeps its typography when the venue network drops.
+   Both fonts are SIL Open Font License 1.1 (Google Fonts). Latin subset only —
+   Chinese/Japanese fall back to the system's Noto Sans / PingFang / Hiragino. */
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 400 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url(archivo-latin.woff2) format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url(jetbrains-mono-latin.woff2) format("woff2");
+}

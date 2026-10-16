@@ -1,0 +1,66 @@
+# Render Blueprint: one web service + a small disk for check-ins and edits.
+# Render → New → Blueprint → pick this repo. Secrets (sync: false) are asked
+# for on the first deploy and never stored in git.
+services:
+  - type: web
+    name: my-maker           # → https://my-maker.onrender.com (pick your own)
+    runtime: node
+    plan: starter            # always on; the free plan sleeps and has no disk
+    region: singapore        # pick the one closest to your event
+    buildCommand: npm ci --omit=dev
+    startCommand: node server/index.mjs
+    healthCheckPath: /api/ping
+    disk:
+      name: data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production      # no stack traces in error pages
+      - key: HOST
+        value: 0.0.0.0
+      - key: TRUST_PROXY
+        value: "1"
+      - key: DATA_DIR
+        value: /var/data
+      - key: EVENT_SLUG
+        value: demo              # events/demo/ (made up); your own event: its folder name
+      - key: PERXONA_API_BASE_URL
+        value: https://console.perxona.ai/asia
+      - key: PRESENTER_URL
+        value: https://cdn.perxona.ai/asia/prod/latest/widget/entry/presenter.js
+      - key: PERXONA_CONNECT_SECRET_KEY
+        sync: false
+      - key: PERXONA_CONNECT_PUBLISHABLE_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: LLM_MODEL         # required: a model ID from your Anthropic account
+        sync: false
+      - key: STAFF_PASSWORD
+        generateValue: true    # a strong one; read it in Render → Environment
+      - key: SLACK_WEBHOOK_URL
+        sync: false            # optional: a Slack message when Perxona credits run low
+      - key: OPENAI_API_KEY
+        sync: false            # optional: only for the ?tts=openai voice trial
+      - key: ELEVENLABS_API_KEY
+        sync: false            # secret; set in Render
+      # Maker's voice. Leave VOICE_PROVIDER empty for Perxona's built-in voice
+      # (voice_id in persona.md); set it to elevenlabs, with your own
+      # ElevenLabs key and voice IDs, for an ElevenLabs voice.
+      - key: VOICE_PROVIDER
+        sync: false
+      - key: ELEVENLABS_VOICE_ID   # one id, or one per language: "zh:ID,en:ID,ja:ID"
+        sync: false
+      - key: ELEVENLABS_MODEL      # turbo answers in about a second
+        value: eleven_turbo_v2_5
+      - key: ELEVENLABS_MODEL_LANG # Chinese on the multilingual model (more natural, ~3 s)
+        value: "zh:multi"
+      # Practice roster (events/<slug>/attendees.mock.csv): only for rehearsing
+      # before the real list exists.
+      - key: ROSTER_MOCK
+        value: "0"
+      - key: PUBLIC_URL
+        sync: false            # e.g. https://my-maker.onrender.com

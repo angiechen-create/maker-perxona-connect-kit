@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Maker · See you</title>
+    <link rel="icon" href="/icon.png" />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <link rel="stylesheet" href="/door/style.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-set="seeyou">
+    <!-- The thank-you screen: the door laptop switches to it when staff press
+         "event over". Maker waves goodbye and says Maker stays online 48
+         hours. Same sizes as the door. -->
+    <div id="door" class="door seeyou">
+      <header class="bar top">
+        <span class="event">SEE YOU</span>
+        <span id="coords" class="dim"></span>
+      </header>
+
+      <main class="grid">
+        <div class="head">
+          <div id="fireworks" class="fireworks" aria-hidden="true"></div>
+          <div class="display">THANKS<br />FOR COMING.</div>
+          <span class="box zh" lang="zh-Hant">謝謝你來！</span>
+        </div>
+
+        <div class="clockbox">
+          <div class="clock-label"><b>Maker is online for</b><i lang="zh-Hant">Maker 還在線</i></div>
+          <div id="clock" class="clock">48:00:00</div>
+          <div class="clock-foot">
+            <span id="until" class="until"></span>
+          </div>
+        </div>
+
+        <div class="qr">
+          <div id="qr" class="qr-tile"></div>
+          <div class="qr-caption">
+            <b>Scan to get back to your Maker</b>
+            <b lang="zh-Hant" class="zh">掃描回到你的 Maker</b>
+            <span class="dim small">Speakers + the people you met · checked-in guests</span>
+          </div>
+        </div>
+
+        <div class="stage">
+          <i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i>
+          <img class="placeholder" src="/m/maker.png" alt="Maker" />
+          <sv-presenter></sv-presenter>
+        </div>
+
+        <div class="credit">
+          <span class="dim">Live 3D by</span>
+          <img src="/brand/perxona-white.png" alt="Perxona" />
+        </div>
+      </main>
+
+      <footer class="bar bottom capbar">
+        <span class="who">MAKER &gt;</span>
+        <span id="caption" class="caption"></span>
+        <span id="sound" class="tag">[EN]</span>
+      </footer>
+    </div>
+
+    <script src="fx.js"></script>
+    <script type="module" src="/door/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,91 @@
+# Everything the concierge is allowed to know about your event.
+# It answers ONLY from this file. If something isn't here, it tells the visitor
+# to ask staff — so a missing answer is safe, a wrong one is not.
+#
+# Lines containing TODO are reported at startup (and by `npm run rehearse`).
+# Fill them in or delete them. You can edit this file while the kiosk runs:
+# it reloads within a second, and a typo keeps the last good version live.
+
+name: TODO Your Event Name
+tagline: TODO one line that says what tonight is
+date: 2026-01-31 (Saturday)          # TODO — YYYY-MM-DD first; the offline board uses it to mark "◀ NOW"
+time: 18:00–21:00 (doors 18:00, program 18:30)
+timezone: Asia/Taipei                # any IANA zone, e.g. Asia/Tokyo, America/New_York
+
+# Short labels for the kiosk screen itself (corners and the cover).
+# Not used for answers. Upper case looks right with the design.
+kiosk:
+  brand: YOUR COMMUNITY CITY         # above the big title on the door screen
+  label: YOUR_COMMUNITY/CITY         # top-left, e.g. BUILDERS/TPE
+  title: TODO EVENT · SUBTITLE       # top-centre on laptops
+  subtitle: "TODO Event subtitle"    # small line on the cover
+  coordinates: 25.03°N 121.56°E      # top-right; any short tag works
+  date: JAN 31 2026
+  place: VENUE · CITY
+  doors: [Doors open 18:00, We start at 18:30]
+  # Offline board QR tiles, in order. `link` is a key under links: below.
+  # {name} becomes the avatar's name.
+  board:
+    - { link: opt_in_form, en: Get introduced, zh: "讓 {name} 介紹你" }
+    - { link: event_page, en: Event page, zh: 活動頁面 }
+    - { link: community, en: Our community, zh: 加入社群 }
+
+venue:
+  name: TODO Venue name
+  address: TODO full address
+  staff_desk: TODO where visitors find a person (e.g. "the check-in table by the door")
+  wifi: TODO network / password, or delete this line
+  restrooms: TODO
+  food_and_drinks: TODO
+
+organizers:
+  organizer: TODO Name, role
+  co_host_and_venue_sponsor: TODO
+
+about_the_community: >
+  TODO two or three sentences on who runs this and what it's for.
+
+schedule:
+  # `what` before " — " is shown on the offline board; the rest is for answers.
+  # `zh` is optional (shown next to it on the board).
+  - time: "18:00"
+    what: Doors open — check-in, food and drinks
+    zh: 開放入場
+  - time: "18:30"
+    what: TODO
+  - time: "21:00"
+    what: Event ends
+
+demos:
+  rules: TODO how many demos, how long, what kind
+  lineup:
+    - title: TODO
+      presenter: TODO
+      one_liner: TODO
+      round: 1
+
+topic_tables:
+  how_it_works: TODO how people pick a table
+  tables:
+    # The concierge recommends 1–2 of these when visitors say what they work on.
+    - table: A
+      topic: TODO
+      host: TODO
+
+house_rules:
+  - TODO
+
+faq:
+  - q: TODO a question people will ask
+    a: TODO the answer
+  - q: Who built you, the concierge?
+    a: >
+      I'm a live 3D avatar made with the Perxona Connect Kit. I only know
+      what's in tonight's event information.
+
+links:
+  # Shown as QR codes on the offline board — the avatar never reads URLs aloud.
+  # opt_in_form is also the "want to be introduced?" QR in the kiosk corner.
+  opt_in_form: TODO https://… (scripts/create-opt-in-form.gs makes one)
+  event_page: TODO https://… your Luma / Eventbrite / Meetup page
+  community: TODO https://… your community page

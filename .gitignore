@@ -1,0 +1,11 @@
+node_modules/
+.env
+stats/
+inbox/
+.DS_Store
+events/*/attendees.csv
+phase.json
+.checkin-secret
+quota-day.json
+voice-day.json
+checkins.before-clear.json

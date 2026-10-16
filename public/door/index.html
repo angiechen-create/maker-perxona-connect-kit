@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Maker · Door</title>
+    <link rel="icon" href="/icon.png" />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- The door screen: one job — get arriving guests to scan and check in
+         on their own phone. Nothing to tap, and nothing about any guest.
+         Laid out at 1440×900 landscape / 1080×1920 portrait, scaled to fit. -->
+    <div id="door" class="door">
+      <header class="bar top">
+        <span id="event-label" class="event"></span>
+        <span id="coords" class="dim"></span>
+      </header>
+
+      <main class="grid">
+        <div class="head">
+          <div class="brandline"></div>
+          <div class="display">SCAN TO<br />CHECK IN.</div>
+          <span class="box" lang="zh-Hant">掃我報到</span>
+        </div>
+
+        <div class="steps">
+          <div class="step"><span class="n">01</span><span><b>Scan with your phone</b><i lang="zh-Hant">用手機掃 QR</i></span></div>
+          <div class="step"><span class="n">02</span><span><b>Type your name</b><i lang="zh-Hant">輸入你的名字</i></span></div>
+          <div class="step"><span class="n">03</span><span><b>Maker tells you who to meet</b><i lang="zh-Hant">Maker 告訴你今晚該認識誰</i></span></div>
+        </div>
+
+        <div id="count" class="count" hidden>
+          <span id="count-n" class="count-n">0</span>
+          <span><b>builders checked in</b><i lang="zh-Hant">位 builder 已報到</i></span>
+        </div>
+
+        <div class="qr">
+          <div id="qr" class="qr-tile"></div>
+          <div class="qr-caption">
+            <span id="url" class="url"></span>
+            <span class="dim">Phone camera · no app · <span lang="zh-Hant">打開相機掃描</span></span>
+          </div>
+        </div>
+
+        <div class="stage">
+          <i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i>
+          <img class="placeholder" src="/m/maker.png" alt="Maker" />
+          <sv-presenter></sv-presenter>
+        </div>
+
+        <div class="credit">
+          <span class="dim">Live 3D by</span>
+          <img src="/brand/perxona-white.png" alt="Perxona" />
+        </div>
+      </main>
+
+      <footer class="bar bottom">
+        <span id="caption" class="caption"></span>
+        <span id="sound" class="dim">[CHECK-IN]</span>
+      </footer>
+    </div>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

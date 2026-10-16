@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- viewport-fit=cover: draw under the notch; safe areas are padded in CSS. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+    <meta name="theme-color" content="#1F3BFF" />
+    <title>Maker</title>
+    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <link rel="stylesheet" href="/kiosk/tokens.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      // Scanned with LINE's QR reader? LINE opens links in its own browser,
+      // where sound and the mic often don't work. This parameter makes LINE
+      // hand the page to the phone's real browser (Safari / Chrome).
+      if (/\bLine\//i.test(navigator.userAgent) && !/openExternalBrowser=/.test(location.search)) {
+        location.replace(location.pathname + (location.search ? location.search + "&" : "?") + "openExternalBrowser=1" + location.hash);
+      }
+    </script>
+  </head>
+  <!-- Phone app, design "MOBILE".
+       data-state: landing | empty | listening | thinking | answer | limit | agenda | offline -->
+  <!-- data-brand: where "by Perxona" lives. "mark" = a sign-off under the
+       landing's small print; "label" = the logo in the stage's corner like a
+       broadcast station mark; "credit" = an opening credit on the empty stage
+       while the 3D loads. -->
+  <body data-theme="blue" data-device="mobile" data-state="landing" data-brand="label">
+    <div id="app" class="app">
+      <header class="top">
+        <div class="top-left">
+        <button id="home" class="home" type="button" aria-label="Home">←</button>
+        <button id="about-back" class="about-back" type="button" aria-label="Back" hidden>←</button>
+        <div class="langs" role="group" aria-label="Language">
+          <button type="button" data-lang="en">EN</button>
+          <button type="button" data-lang="zh" lang="zh-Hant">中文</button>
+          <button type="button" data-lang="ja" lang="ja">日本語</button>
+        </div>
+        </div>
+        <button id="sound" class="sound" type="button" aria-pressed="false">
+          <svg class="pix" data-icon="mute" aria-hidden="true"></svg>
+          <span id="sound-label"></span>
+        </button>
+      </header>
+
+      <div id="banner" class="banner" hidden>
+        <b>✕ OFFLINE <span class="waitbar" data-bar="10"></span></b>
+        <span data-l="zh" lang="zh-Hant">網路暫時斷線，有問題請找現場工作人員。</span>
+        <span data-l="en" lang="en">The network dropped. For anything urgent, ask the staff.</span>
+        <span data-l="ja" lang="ja">ネットが一時的に切れています。困ったらスタッフに声をかけてね。</span>
+      </div>
+
+      <!-- The live avatar. Resized between states, never moved or removed,
+           so the 3D session survives. The PNG shows until it's ready. -->
+      <section id="stage" class="stage" aria-label="Maker">
+        <i class="crop tl"></i><i class="crop tr"></i><i class="crop bl"></i><i class="crop br"></i>
+        <!-- Like a broadcast station mark: whose live 3D this is. -->
+        <span class="stage-label"><img id="corner-logo" class="brand-label" src="/brand/perxona-white.png" alt="Perxona" /><span id="stage-event" class="brand-nolabel"></span></span>
+        <span class="stage-count">[<span class="q-count">00</span>/<span class="q-limit">20</span>]</span>
+        <div class="avatar">
+          <img class="placeholder" alt="" />
+          <sv-presenter></sv-presenter>
+        </div>
+        <span id="stage-chip" class="stage-chip" hidden></span>
+        <!-- About page: Maker floats over it; – shrinks him to a card, the bubble talks. -->
+        <button id="float-min" class="float-min" type="button" aria-label="Minimize Maker" hidden><span>–</span></button>
+        <p id="float-bubble" class="float-bubble" aria-live="polite" hidden></p>
+        <!-- Shown only when the server has no Perxona key (someone running the open-source code). -->
+        <a id="no-perxona" class="no-perxona" href="https://console.perxona.ai" target="_blank" rel="noopener" hidden></a>
+        <div class="credit brand-intro" aria-hidden="true">
+          <b>LIVE 3D BY</b>
+          <img src="/brand/perxona-white.png" alt="" />
+          <span id="credit-bar" class="credit-cells"></span>
+          <span id="credit-label" class="credit-label"></span>
+        </div>
+        <div class="stage-info">
+          <div class="info-head"><b id="info-name">MAKER</b><span>[<span class="q-count">00</span>/<span class="q-limit">20</span>]</span></div>
+          <div id="info-status" class="mono dim"></div>
+          <div id="info-bar" class="mono"></div>
+        </div>
+      </section>
+
+      <!-- Bottom sheet: everything you read and type. Maker above never moves;
+           the sheet slides over it (drag the handle) and rides on the keyboard. -->
+      <section id="sheet" class="sheet" data-snap="rest">
+        <button id="handle" class="handle" type="button" aria-label="Expand / collapse"><i></i></button>
+      <main id="content" class="content">
+        <section class="pane landing">
+          <p id="inapp" class="inapp" hidden></p>
+          <h1 id="hi" class="display"></h1>
+          <span id="match" class="box match"></span>
+          <p id="land-text" class="lead"></p>
+          <!-- Check in: type your name, tap. Then one consent question in the chat. -->
+          <form id="checkin" class="push" autocomplete="off">
+            <label id="ci-label" class="ci-label" for="ci-name"></label>
+            <label class="field ci-field"><input id="ci-name" maxlength="60" autocomplete="name" enterkeyhint="go" /></label>
+            <p id="ci-msg" class="ci-msg" hidden></p>
+            <div id="ci-choices" class="ci-choices" hidden></div>
+            <button id="start" class="cta" type="submit">
+              <span><b id="start-label"></b> <small id="start-sub"></small></span><span class="arrow">→</span>
+            </button>
+            <p id="ci-hint" class="ci-hint" hidden><b>!</b><span></span></p>
+            <div class="ci-links">
+              <button id="notme" class="textlink" type="button"></button>
+              <button id="about-link" class="textlink" type="button" hidden></button>
+            </div>
+            <p class="fine"><span id="print1"></span><span id="print2" class="brand-label"></span><span class="brand-credit">Live 3D by Perxona</span></p>
+            <p class="by brand-mark"><span>by</span><img src="/brand/perxona-white.png" alt="Perxona" /></p>
+          </form>
+        </section>
+
+        <section class="pane empty">
+          <span id="greet" class="box"></span>
+          <p id="greet-sub" class="lead"></p>
+          <a class="optin" target="_blank" rel="noopener"><span class="optin-q"></span><b>→ <span class="optin-cta"></span></b></a>
+        </section>
+
+        <div id="thread" class="thread" aria-live="polite"></div>
+
+        <section class="pane listening">
+          <span id="listen-box" class="box listen"></span>
+          <p class="transcript">「<span id="transcript"></span><span class="cursor">▍</span></p>
+          <div id="meter" class="meter" aria-hidden="true"></div>
+        </section>
+
+        <section class="pane limit">
+          <h1 class="display small">GO MEET<br />SOME<br />HUMANS!</h1>
+          <span class="box" lang="zh-Hant">去認識真人吧</span>
+          <p id="limit-text" class="lead"></p>
+          <a class="optin" target="_blank" rel="noopener"><span class="optin-q"></span><b>→ <span class="optin-cta"></span></b></a>
+        </section>
+
+        <section class="pane agenda">
+          <div class="agenda-head"><b class="display tiny">TONIGHT</b><span id="agenda-note" class="mono dim"></span></div>
+          <ol id="schedule" class="sched"></ol>
+        </section>
+      </main>
+
+      <div id="chips" class="chips"></div>
+
+      <form id="inputbar" class="inputbar" autocomplete="off">
+        <!-- Tonight's program (agenda, demo speakers, topic tables), out of the way. -->
+        <button id="menu" class="menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Menu">☰</button>
+        <div id="menu-pop" class="menu-pop" hidden></div>
+        <label class="field">
+          <input id="q" maxlength="300" enterkeyhint="send" />
+          <button id="send" type="submit" aria-label="Send">→</button>
+        </label>
+        <button id="hold" class="hold" type="button">
+          <svg class="pix" data-icon="mic" aria-hidden="true"></svg>
+          <b id="hold-label"></b>
+        </button>
+      </form>
+
+      <!-- While listening: two plain taps, cancel or send. -->
+      <div id="releasebar" class="releasebar">
+        <button id="voice-cancel" class="rb-cancel" type="button"><b id="cancel-label"></b></button>
+        <button id="voice-send" class="rb-send" type="button">
+          <svg class="pix" data-icon="mic" aria-hidden="true"></svg>
+          <span><b id="release-label"></b><small id="timer">● 00:00</small></span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+
+      <div class="bottombar limitbar">
+        <button id="agenda-btn" class="cta" type="button"><b id="agenda-label"></b><span class="arrow">→</span></button>
+      </div>
+      <div class="bottombar agendabar">
+        <button id="back-btn" class="cta ghost" type="button"><span class="arrow">←</span><b id="back-label"></b></button>
+      </div>
+      <div class="bottombar offlinebar mono dim"><span>&gt; reconnecting<span class="cursor">▍</span></span><span class="waitbar" data-bar="10"></span></div>
+      </section>
+    </div>
+
+    <!-- The agenda picture, big: save it, or press and hold. -->
+    <!-- Tonight's program, opened over the chat (Back closes it, the chat and
+         the 3D Maker stay as they were). -->
+    <div id="guide-overlay" class="guide-overlay" hidden></div>
+
+    <!-- About Maker: who he is, in his own words (persona.md `about`). -->
+    <!-- About Maker: a page of its own under the top
+         bar; the live 3D Maker stays above it and shrinks to a strip as you
+         scroll. Back with ← in the top bar (or the phone's Back). -->
+    <i id="guide-l" class="float-guide l" hidden></i><i id="guide-r" class="float-guide r" hidden></i>
+    <div id="about" class="about" role="dialog" aria-modal="true" aria-labelledby="about-title" hidden>
+      <div class="about-head">
+        <h2 id="about-title" class="display">HI, I'M<br />MAKER.</h2>
+        <p id="about-intro" class="about-intro"></p>
+      </div>
+      <div id="about-sections"></div>
+      <div id="about-author" class="about-author"></div>
+      <div id="about-build" class="about-build"></div>
+    </div>
+
+    <div id="lightbox" class="lightbox" hidden>
+      <button id="lb-close" class="lb-close" type="button" aria-label="Close">✕</button>
+      <img alt="" />
+      <div class="lb-actions">
+        <button id="lb-save" class="cta" type="button"></button>
+        <p id="lb-hint" class="mono dim"></p>
+      </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

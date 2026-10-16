@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Maker 工作人員</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="top">
+      <strong id="event-name">Maker 工作人員</strong>
+      <div class="top-actions">
+        <button type="button" id="lang" class="ghost">EN</button>
+        <a href="/door/" target="_blank" class="ghost" data-t="openDoor"></a>
+        <a href="/seeyou/?preview" target="_blank" class="ghost" data-t="openSeeyou"></a>
+        <button type="button" id="logout" class="ghost" hidden data-t="logout"></button>
+      </div>
+    </header>
+
+    <main id="login" class="wrap" hidden>
+      <form id="login-form" class="card narrow">
+        <h1 data-t="signIn"></h1>
+        <input id="password" type="password" autocomplete="current-password" required />
+        <button type="submit" data-t="signIn"></button>
+        <p id="login-error" class="error" hidden></p>
+      </form>
+    </main>
+
+    <main id="app" class="wrap" hidden>
+      <section class="card status" id="status"></section>
+
+      <!-- Check-in: the whole roster, two ticks per person. -->
+      <section class="card">
+        <div class="checkin-head">
+          <h2 data-t="checkin"></h2>
+          <span id="checkin-count" class="pill big"></span>
+        </div>
+        <p id="sources" class="hint"></p>
+        <p class="script" data-t="askScript"></p>
+        <div class="checkin-tools">
+          <input id="search" type="search" autocomplete="off" />
+          <div class="filters" role="group">
+            <button type="button" data-filter="all" aria-pressed="true" data-t="fAll"></button>
+            <button type="button" data-filter="todo" data-t="fTodo"></button>
+            <button type="button" data-filter="here" data-t="fHere"></button>
+            <button type="button" data-filter="intro" data-t="fIntro"></button>
+          </div>
+        </div>
+        <ul id="people" class="people"></ul>
+
+        <details id="person-details">
+          <summary data-t="addPerson"></summary>
+          <p class="hint" data-t="addPersonHint"></p>
+          <form id="person-form" class="grid">
+            <input type="hidden" name="replaces" />
+            <label><span data-t="name"></span><input name="name" required maxlength="60" /></label>
+            <label><span data-t="role"></span><input name="role" maxlength="60" /></label>
+            <label><span data-t="building"></span><input name="building" maxlength="240" /></label>
+            <label><span data-t="lookingFor"></span><input name="looking_for" maxlength="240" /></label>
+            <label><span data-t="linkedin"></span><input name="linkedin" inputmode="url" placeholder="linkedin.com/in/…" /></label>
+            <label><span data-t="link"></span><input name="link" inputmode="url" placeholder="https://…" /></label>
+            <label class="check"><input type="checkbox" name="here" value="yes" checked /><span data-t="hereTick"></span></label>
+            <label class="check"><input type="checkbox" name="consent" value="yes" /><span data-t="consent"></span></label>
+            <div class="row">
+              <button type="submit" data-t="save"></button>
+              <button type="button" id="person-cancel" class="ghost" hidden data-t="cancel"></button>
+              <button type="button" id="person-remove" class="danger" hidden data-t="remove"></button>
+            </div>
+          </form>
+        </details>
+        <details>
+          <summary data-t="importTitle"></summary>
+          <p class="hint" data-t="importHint"></p>
+          <label class="check"><input id="import-replace" type="checkbox" /><span data-t="importReplace"></span></label>
+          <input id="import-file" type="file" accept=".csv,text/csv" />
+          <p id="import-result" class="hint"></p>
+        </details>
+        <p class="row">
+          <a class="button ghost" href="/api/staff/attendance.csv" data-t="exportAttendance"></a>
+          <button type="button" id="reset-checkins" class="danger" data-t="resetCheckins"></button>
+          <button type="button" id="reset-stats" class="danger" data-t="resetStats"></button>
+        </p>
+        <p class="row undo-row">
+          <button type="button" id="undo-checkins" class="ghost" hidden></button>
+          <button type="button" id="undo-stats" class="ghost" hidden></button>
+        </p>
+      </section>
+
+      <div id="sections"></div>
+    </main>
+
+    <div id="toast" class="toast" hidden></div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
