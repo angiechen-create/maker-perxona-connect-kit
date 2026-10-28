@@ -1,5 +1,7 @@
 # Maker — a live 3D AI matchmaker for community events, by Perxona Connect Kit
 
+[![Built with Perxona](https://img.shields.io/badge/Built%20with-Perxona-000095)](https://github.com/XRSPACE-Inc/perxona-connect-kit)
+
 A live 3D AI host for community events. Guests scan a QR code at the door,
 check in on their own phone, and ask, by voice or by typing, in 中文 or
 English (the code also has 日本語). It also runs as a kiosk at the entrance:
