@@ -497,7 +497,8 @@ app.get("/api/qr-app", safe(async (req, res) => {
   const url = PUBLIC_URL || `${req.protocol}://${req.get("host")}`;
   const src = SRC.test(String(req.query.src ?? "")) ? String(req.query.src) : "";
   const withCode = !!src && staff.isStaff(req) && checkin.doorRequired(config.get().event);
-  const target = `${url}/${src ? `m/?src=${src}${withCode ? `&k=${checkin.currentDoorCode()}` : ""}` : ""}`;
+  const lang = PREVIEW_LANGS.includes(req.query.lang) ? `&lang=${req.query.lang}` : ""; // the computer page's QR keeps its language
+  const target = `${url}/${src ? `m/?src=${src}${withCode ? `&k=${checkin.currentDoorCode()}` : ""}${lang}` : ""}`;
   const svg = await QRCode.toString(target, { type: "svg", margin: 1, errorCorrectionLevel: "M" });
   res.type("image/svg+xml").set("Cache-Control", "no-store").set("X-Door-Code", withCode ? "1" : "0").send(svg);
 }));

@@ -16,6 +16,11 @@
       if (/\bLine\//i.test(navigator.userAgent) && !/openExternalBrowser=/.test(location.search)) {
         location.replace(location.pathname + (location.search ? location.search + "&" : "?") + "openExternalBrowser=1" + location.hash);
       }
+      // On a computer the phone app is shown at phone size, framed, with a QR
+      // to try it on a phone (desk.html). ?full=1 keeps the full-width page.
+      else if (window.top === window && innerWidth >= 900 && matchMedia("(pointer: fine)").matches && !/[?&]full=/.test(location.search)) {
+        location.replace("/m/desk.html" + location.search);
+      }
     </script>
   </head>
   <!-- Phone app, design "MOBILE".
