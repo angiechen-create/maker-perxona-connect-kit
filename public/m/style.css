@@ -126,8 +126,8 @@ body[data-brand="label"]:not(.logo-home) #corner-logo { opacity: 0; }
 .avatar sv-presenter, .avatar .placeholder { position: absolute; inset: 0; width: 100%; height: 100%; }
 .avatar .placeholder { object-fit: contain; object-position: bottom; transition: opacity .4s; }
 .avatar sv-presenter { display: block; opacity: 0; transition: opacity .4s; }
-body.avatar-ready .avatar sv-presenter { opacity: 1; }
-body.avatar-ready .avatar .placeholder { opacity: 0; }
+body.avatar-shown .avatar sv-presenter { opacity: 1; }
+body.avatar-shown .avatar .placeholder { opacity: 0; }
 
 .stage-chip {
   position: absolute; left: 0; bottom: 10px; z-index: 2; padding: 5px 8px;

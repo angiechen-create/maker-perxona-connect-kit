@@ -60,6 +60,8 @@ presenter.addEventListener("PRESENTER_STATUS", (e) => {
   const was = ready;
   ready = e.detail?.status === "Ready";
   body.classList.toggle("avatar-ready", ready);
+  // His head can arrive after "Ready": keep the picture up a moment longer.
+  if (ready && !was && !body.classList.contains("avatar-shown")) setTimeout(() => body.classList.add("avatar-shown"), 2500);
   // Whole body in the narrow stage (the default framing crops his hands).
   if (ready && !was) try { presenter.updateCameraAngle?.("fullbody"); } catch {}
   if (ready && !was) setTimeout(flourish, 800);

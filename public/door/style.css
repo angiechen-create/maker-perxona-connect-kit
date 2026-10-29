@@ -109,8 +109,8 @@ body { color: var(--k-ink); font-family: var(--k-font-body); -webkit-font-smooth
   transition: opacity .4s;
 }
 .stage sv-presenter { position: absolute; inset: 2px; display: block; opacity: 0; transition: opacity .4s; }
-body.avatar-ready .stage sv-presenter { opacity: 1; }
-body.avatar-ready .stage .placeholder { opacity: 0; }
+body.avatar-shown .stage sv-presenter { opacity: 1; }
+body.avatar-shown .stage .placeholder { opacity: 0; }
 
 .credit { grid-area: credit; display: flex; align-items: center; justify-content: var(--d-credit-justify); gap: 20px; padding: 20px 0 4px; min-width: 0; }
 .credit .dim { font-family: var(--k-font-mono); font-size: var(--d-t-label); letter-spacing: .04em; white-space: nowrap; }

@@ -713,6 +713,9 @@ function attachPresenter(node) {
     if (ready && !was && body.classList.contains("about-open")) setTimeout(() => talkAbout(aboutSec), 900); // About opened before he was on stage
     if (ready && !was) setTimeout(flourish, 800); // ta-da, he's here
     body.classList.toggle("avatar-ready", ready);
+    // The 3D streams in in parts: at "Ready" his body can be there before his
+    // head. The picture stays a moment longer, so nobody sees him headless.
+    if (ready && !was && !body.classList.contains("avatar-shown")) setTimeout(() => body.classList.add("avatar-shown"), 2500);
     cameraAngle = null; // a (re)initialised presenter starts at its default framing
     applyCamera();
     renderChip();
