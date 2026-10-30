@@ -539,11 +539,18 @@ $("sound").addEventListener("click", async () => {
 // Any tap anywhere counts (chips, follow-ups, the sheet), not only buttons
 // that call this directly.
 addEventListener("pointerdown", () => unlockAudio(), { capture: true, passive: true });
-async function unlockAudio() {
-  // iOS Safari 16.4+: play like a media app, so the silent switch doesn't mute Maker.
+// iOS Safari 16.4+ audio session. "playback" plays like a media app, so the
+// silent switch doesn't mute Maker, but it is output only: iOS won't open a
+// Bluetooth headset's mic (AirPods) in it. While the visitor talks it is
+// "play-and-record", which does; then back to "playback".
+let micOpen = false;
+function audioMode() {
   try {
-    if (navigator.audioSession) navigator.audioSession.type = "playback";
+    if (navigator.audioSession) navigator.audioSession.type = micOpen ? "play-and-record" : "playback";
   } catch {}
+}
+async function unlockAudio() {
+  audioMode();
   try {
     await presenter.resumeAudioPlayback?.();
     audioUnlocked = true;
@@ -1223,6 +1230,8 @@ $("q").addEventListener("input", () => $("q").parentElement.classList.toggle("ha
     before = state;
     $("transcript").textContent = "";
     listenStart = Date.now();
+    micOpen = true;
+    audioMode(); // the headset's mic too, not just the phone's
     rec = new Recognition();
     rec.lang = SPEECH_LANG[lang];
     rec.interimResults = true;
@@ -1239,6 +1248,8 @@ $("q").addEventListener("input", () => $("q").parentElement.classList.toggle("ha
     };
     rec.onend = () => {
       rec = null;
+      micOpen = false;
+      audioMode();
       pose();
       // Send on tap — or when the browser stops listening by itself after a
       // pause and we already have words. Cancel throws it away.
@@ -1251,6 +1262,8 @@ $("q").addEventListener("input", () => $("q").parentElement.classList.toggle("ha
       setState("listening");
     } catch {
       rec = null;
+      micOpen = false;
+      audioMode();
     }
   };
 
